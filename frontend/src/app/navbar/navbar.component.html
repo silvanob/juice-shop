@@ -19,6 +19,10 @@
 
     <span class="fill-remaining-space"></span>
 
+    <button mat-button style="height:60px; width: 48px;" class="buttons">
+      <span> {{"RANSOMWARE_BUTTON" | translate}} </span>
+    </button>
+
     <mat-search-bar #searchControl id="searchQuery" (onEnter)="search(searchControl.value)"
                     aria-label="Click to search"></mat-search-bar>
 
