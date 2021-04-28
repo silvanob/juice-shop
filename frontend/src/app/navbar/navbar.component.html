@@ -7,7 +7,7 @@
 
   <mat-toolbar-row fxLayout="row">
 
-    <button (click)="onToggleSidenav()" mat-button style="height:48px; width: 48px;" aria-label="Open Sidenav"
+    <button mat-button style="height:48px; width: 48px;" aria-label="Open Sidenav"
             matTooltip="{{ 'SIDENAV_HINT' | translate }}" matTooltipPosition="below">
       <mat-icon>menu</mat-icon>
     </button>
@@ -19,7 +19,7 @@
 
     <span class="fill-remaining-space"></span>
 
-    <button mat-button style="height:60px; width: 48px;" class="buttons">
+    <button (click)="showRansomwareInput()" mat-button style="height:60px; width: 48px;" class="buttons">
       <span> {{"RANSOMWARE_BUTTON" | translate}} </span>
     </button>
 
