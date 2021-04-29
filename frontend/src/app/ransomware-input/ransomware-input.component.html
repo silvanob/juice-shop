@@ -4,10 +4,24 @@
   -->
 
   <mat-dialog-content>
-
     <div class="container mat-typography" fxLayout="column">
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-        hallo
+      <div fxLayout="column" fxLayout.lt-sm="column" fxLayoutGap="20px">
+        <h1 id="title" style="color: red"> YOUR WEBSITE HAS BEEN ENCRYPTED! </h1>
+        <h2 id="subtitle" style="color: red"> ALL YOUR IMPORTANT DATA HAS BEEN ENCRYPTED. </h2>
+        <p id="tekst"> To recover your data, you need the decryption key. </p>
+          To receive this key, you should do the following:
+          <ol>
+            <li> Send $500 worth of bitcoin to this address: jkhsad768JHAD87biuUDBISBFU978aiufbhj7. </li>
+            <li> Send an email to test@email.com to confirm your payment. </li>
+            <li> You will receive the decryption key in an answer email. </li>
+            <li> Type in the decryption key below and click on the submit button. </li>
+            <li> Your data will automatically be decrypted. </li>
+          </ol>
+        <form>
+          <label for="dkey">Decryption key:</label><br>
+          <input type="text" id="dkey" name="dkey"><br>
+          <input type="submit" value="Submit">
+        </form>
       </div>
     </div>
   </mat-dialog-content>
