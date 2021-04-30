@@ -179,8 +179,8 @@
           </a>
           <button
             *ngIf="challenge.hasSnippet && (showCodeSnippets === 'always' || showCodeSnippets === 'solved' && challenge.solved)"
-            mat-mini-fab color="primary"
-            (click)="showCodeSnippet(challenge.key)"
+            mat-raised-button color="accent"
+            (click)="toggleShowDisabledChallenges()"
             [matTooltip]="('INFO_VULNERABLE_CODE_SNIPPET' | translate)"
             matTooltipPosition="above"
             class="code-snippet-button"
@@ -188,6 +188,18 @@
             <mat-icon>
               code
             </mat-icon>
+          </button>
+          <button
+            *ngIf=" challenge.name === 'Ransomware' "
+            [disabled]="click"
+            mat-raised-button color="accent"
+            (click)="showCodeSnippet(challenge.key); onclick();"
+            [matTooltip]="('START_BUTTON' | translate)"
+            matTooltipPosition="above"
+            class="code-snippet-button"
+            
+          >
+          {{Start?"Start":"Started"}}
           </button>
         </mat-cell>
       </ng-container>

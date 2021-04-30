@@ -62,6 +62,9 @@ export class ScoreBoardComponent implements OnInit {
   public appName: string = 'OWASP Juice Shop'
   public localBackupEnabled: boolean = true
 
+  public click : boolean = false;
+
+
   constructor (private readonly configurationService: ConfigurationService, private readonly challengeService: ChallengeService, private readonly codeSnippetService: CodeSnippetService, private readonly sanitizer: DomSanitizer, private readonly ngZone: NgZone, private readonly io: SocketIoService, private readonly spinner: NgxSpinnerService, private readonly translate: TranslateService, private readonly localBackupService: LocalBackupService, private readonly dialog: MatDialog) {
   }
 
@@ -345,17 +348,30 @@ export class ScoreBoardComponent implements OnInit {
 
   saveBackup () {
     this.localBackupService.save(this.appName.toLowerCase().replace(/ /, '_'))
-  }
+  } 
 
   restoreBackup (file: File) {
     this.localBackupService.restore(file)
   }
 
   showCodeSnippet (key: string) {
+    this.click = !this.click;
     this.dialog.open(CodeSnippetComponent, {
-      data: {
-        key: key
-      }
-    })
+    data: {
+    key: key
+    
+    }
+  })
   }
+  //START variable, its true than START string will print
+  Start:boolean = true
+
+  //onclick toggling both
+  onclick()
+  {
+    this.Start = !this.Start; //not equal to
+  }
+
+  
 }
+
