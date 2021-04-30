@@ -1030,6 +1030,7 @@
   hintUrl: "https://pwning.owasp-juice.shop/part2/miscellaneous.html#receive-a-coupon-code-from-the-support-chatbot"
   mitigationUrl: ~
   key: bullyChatbotChallenge
+<<<<<<< HEAD
 - name: "Ransomware"
   category: "Cryptographic Issues"
   tags:
@@ -1038,5 +1039,16 @@
   difficulty: 3
   hint: "F"
   hintUrl: "Big F"
+=======
+-
+  name: 'Ransomware'
+  category: 'Cryptographic Issues'
+  tags:
+    - Kaas
+  description: Cheesed
+  difficulty: 3
+  hint: 'F'
+  hintUrl: 'Big F'
+>>>>>>> Start-knop
   mitigationUrl: ~
   key: ransomwareChallenge
