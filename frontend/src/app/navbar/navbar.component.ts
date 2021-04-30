@@ -16,6 +16,8 @@ import { SocketIoService } from '../Services/socket-io.service'
 import { LanguagesService } from '../Services/languages.service'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { BasketService } from '../Services/basket.service'
+import { RansomwareInputComponent } from '../ransomware-input/ransomware-input.component'
+import { MatDialog } from '@angular/material/dialog'
 
 import {
   faBomb,
@@ -65,7 +67,7 @@ export class NavbarComponent implements OnInit {
 
   @Output() public sidenavToggle = new EventEmitter()
 
-  constructor (private readonly administrationService: AdministrationService, private readonly challengeService: ChallengeService,
+  constructor (private readonly dialog: MatDialog, private readonly administrationService: AdministrationService, private readonly challengeService: ChallengeService,
     private readonly configurationService: ConfigurationService, private readonly userService: UserService, private readonly ngZone: NgZone,
     private readonly cookieService: CookieService, private readonly router: Router, private readonly translate: TranslateService,
     private readonly io: SocketIoService, private readonly langService: LanguagesService, private readonly loginGuard: LoginGuard,
@@ -202,6 +204,13 @@ export class NavbarComponent implements OnInit {
 
   onToggleSidenav = () => {
     this.sidenavToggle.emit()
+  }
+
+  showRansomwareInput = () => {
+    this.dialog.open(RansomwareInputComponent, {
+      width: '500px',
+      height: 'max-content',
+    })
   }
 
   // eslint-disable-next-line no-empty,@typescript-eslint/no-empty-function

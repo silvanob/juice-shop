@@ -1,0 +1,28 @@
+<!--
+  ~ Copyright (c) 2014-2021 Bjoern Kimminich.
+  ~ SPDX-License-Identifier: MIT
+  -->
+
+  <mat-dialog-content>
+    <div class="container mat-typography" fxLayout="column">
+      <div fxLayout="column" fxLayout.lt-sm="column" fxLayoutGap="20px">
+        <h1 id="title" style="color: red"> {{"WEBSITE_ENCRYPTED" | translate}} </h1>
+        <h2 id="subtitle" style="color: red"> {{"DATA_ENCRYPTED" | translate}}</h2>
+        <p id="tekst"> {{"RECOVER_DATA" | translate}} </p>
+        <p> {{"RECEIVE_KEY" | translate}} </p>
+          <ol>
+            <li> {{"SEND_BITCOIN" | translate}} </li>
+            <li> {{"SEND_EMAIL" | translate}} </li>
+            <li> {{"RECEIVE_EMAIL" | translate}} </li>
+            <li> {{"SUBMIT_KEY" | translate}} </li>
+            <li> {{"DATA_DECRYPTED" | translate}} </li>
+          </ol>
+        <form>
+          <label for="dkey">{{"DECRYPTION_KEY_FORM" | translate}}</label><br>
+          <input type="text" id="dkey" name="dkey"><br>
+          <input type="submit" value="Submit">
+        </form>
+      </div>
+    </div>
+  </mat-dialog-content>
+  
