@@ -410,6 +410,17 @@
   "REVEAL_VULNERABLE_CODE_LINES": "Hover to reveal vulnerable line(s) of code",
   "INFO_VULNERABLE_CODE_SNIPPET": "Show corresponding vulnerable code snippet.",
   "LABEL_LINES": "Line(s)",
+  "RANSOMWARE_BUTTON": "Decrypt page",
+  "WEBSITE_ENCRYPTED": "YOUR WEBSITE HAS BEEN ENCRYPTED!",
+  "DATA_ENCRYPTED": "ALL YOUR IMPORTANT DATA HAS BEEN ENCRYPTED.",
+  "RECOVER_DATA": "To recover your data, you need the decryption key.",
+  "RECEIVE_KEY": "To receive this key, you should do the following: ",
+  "SEND_BITCOIN": "Send $500 worth of bitcoin to this address: jkhsad768JHAD87biuUDBISBFU978aiufbhj7.",
+  "SEND_EMAIL": "Send an email to test@email.com to confirm your payment.",
+  "RECEIVE_EMAIL": "You will receive the decryption key in an answer email.",
+  "SUBMIT_KEY": "Type in the decryption key below and click on the submit button.",
+  "DATA_DECRYPTED": "Your data will automatically be decrypted.",
+  "DECRYPTION_KEY_FORM": "Decryption key:"
   "LOADING_CODE_SNIPPET": "Loading code snippet...",
   "START_BUTTON": "Start"
 }
