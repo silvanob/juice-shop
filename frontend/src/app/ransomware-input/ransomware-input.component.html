@@ -6,19 +6,19 @@
   <mat-dialog-content>
     <div class="container mat-typography" fxLayout="column">
       <div fxLayout="column" fxLayout.lt-sm="column" fxLayoutGap="20px">
-        <h1 id="title" style="color: red"> YOUR WEBSITE HAS BEEN ENCRYPTED! </h1>
-        <h2 id="subtitle" style="color: red"> ALL YOUR IMPORTANT DATA HAS BEEN ENCRYPTED. </h2>
-        <p id="tekst"> To recover your data, you need the decryption key. </p>
-        <p> To receive this key, you should do the following: </p>
+        <h1 id="title" style="color: red"> {{"WEBSITE_ENCRYPTED" | translate}} </h1>
+        <h2 id="subtitle" style="color: red"> {{"DATA_ENCRYPTED" | translate}}</h2>
+        <p id="tekst"> {{"RECOVER_DATA" | translate}} </p>
+        <p> {{"RECEIVE_KEY" | translate}} </p>
           <ol>
-            <li> Send $500 worth of bitcoin to this address: jkhsad768JHAD87biuUDBISBFU978aiufbhj7. </li>
-            <li> Send an email to test@email.com to confirm your payment. </li>
-            <li> You will receive the decryption key in an answer email. </li>
-            <li> Type in the decryption key below and click on the submit button. </li>
-            <li> Your data will automatically be decrypted. </li>
+            <li> {{"SEND_BITCOIN" | translate}} </li>
+            <li> {{"SEND_EMAIL" | translate}} </li>
+            <li> {{"RECEIVE_EMAIL" | translate}} </li>
+            <li> {{"SUBMIT_KEY" | translate}} </li>
+            <li> {{"DATA_DECRYPTED" | translate}} </li>
           </ol>
         <form>
-          <label for="dkey">Decryption key:</label><br>
+          <label for="dkey">{{"DECRYPTION_KEY_FORM" | translate}}</label><br>
           <input type="text" id="dkey" name="dkey"><br>
           <input type="submit" value="Submit">
         </form>
