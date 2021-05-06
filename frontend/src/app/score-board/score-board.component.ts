@@ -358,7 +358,6 @@ export class ScoreBoardComponent implements OnInit {
   }
 
   showCodeSnippet (key: string) {
-    this.click = !this.click;
     this.dialog.open(CodeSnippetComponent, {
     data: {
     key: key
@@ -371,8 +370,7 @@ export class ScoreBoardComponent implements OnInit {
 
   //onclick toggling both
   onclick() {
-    this.Start = !this.Start;
-    ///NavbarComponent.ransomwareButtonHidden = false
+    this.click = !this.click;
   }
 
   showRansomwareInput = () => {
@@ -381,6 +379,5 @@ export class ScoreBoardComponent implements OnInit {
       height: 'max-content',
     })
   }
-  
 }
 
