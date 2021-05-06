@@ -372,7 +372,7 @@ export class ScoreBoardComponent implements OnInit {
   //onclick toggling both
   onclick() {
     this.Start = !this.Start;
-    NavbarComponent.ransomwareButtonHidden = false
+    //NavbarComponent.ransomwareButtonHidden = false
   }
 
   showRansomwareInput = () => {
