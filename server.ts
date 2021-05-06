@@ -62,6 +62,7 @@ const order = require('./routes/order')
 const verify = require('./routes/verify')
 const recycles = require('./routes/recycles')
 const b2bOrder = require('./routes/b2bOrder')
+const ransomware = require('./routes/ransomware')
 const showProductReviews = require('./routes/showProductReviews')
 const createProductReviews = require('./routes/createProductReviews')
 const updateProductReviews = require('./routes/updateProductReviews')
@@ -372,6 +373,9 @@ restoreOverwrittenFilesWithOriginals().then(() => {
     new RateLimit({ windowMs: 5 * 60 * 1000, max: 100 }),
     twoFactorAuth.verify()
   )
+
+  app.post('/rest/ransomware/decrypt', ransomware())
+
   /* Check 2FA Status for the current User */
   app.get('/rest/2fa/status', security.isAuthorized(), twoFactorAuth.status())
   /* Enable 2FA for the current User */
