@@ -193,7 +193,7 @@
             *ngIf=" challenge.name === 'Ransomware' "
             [disabled]="click"
             mat-raised-button color="accent"
-            (click)="showRansomwareInput(); showCodeSnippet(); onclick();"
+            (click)="showCodeSnippet(challenge.key); onclick();"
             [matTooltip]="('START_BUTTON' | translate)"
             matTooltipPosition="above"
             class="code-snippet-button"
