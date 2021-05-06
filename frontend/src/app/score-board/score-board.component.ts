@@ -21,6 +21,9 @@ import { LocalBackupService } from '../Services/local-backup.service'
 import { MatDialog } from '@angular/material/dialog'
 import { CodeSnippetComponent } from '../code-snippet/code-snippet.component'
 import { CodeSnippetService } from '../Services/code-snippet.service'
+import { RansomwareInputComponent } from '../ransomware-input/ransomware-input.component'
+import { NavbarComponent } from '../navbar/navbar.component'
+
 
 library.add(faStar, faGem, faGitter, faGithub, faBtc, faTrophy, faPollH)
 dom.watch()
@@ -367,11 +370,17 @@ export class ScoreBoardComponent implements OnInit {
   Start:boolean = true
 
   //onclick toggling both
-  onclick()
-  {
-    this.Start = !this.Start; //not equal to
+  onclick() {
+    this.Start = !this.Start;
+    NavbarComponent.ransomwareButtonHidden = false
   }
 
+  showRansomwareInput = () => {
+    this.dialog.open(RansomwareInputComponent, {
+      width: '500px',
+      height: 'max-content',
+    })
+  }
   
 }
 
