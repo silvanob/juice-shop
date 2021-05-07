@@ -299,4 +299,11 @@ describe('ScoreBoardComponent', () => {
     component.ngOnInit()
     expect(component.showHackingInstructor).toBeTruthy()
   })
+
+  it('Should check if onclick is true', () => {
+    configurationService.getApplicationConfiguration.and.returnValue(of({ onclick:{click:true} }))
+    component.ngOnInit()
+    expect(component.onclick).toBeTruthy()
+  })
+
 })
