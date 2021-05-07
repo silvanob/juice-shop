@@ -12,6 +12,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angul
 import { HttpClientTestingModule } from '@angular/common/http/testing'
 import { NavbarComponent } from './navbar.component'
 import { Location } from '@angular/common'
+import { RansomwareInputComponent } from '../ransomware-input/ransomware-input.component'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { MatSelectModule } from '@angular/material/select'
@@ -30,7 +31,7 @@ import { MatCardModule } from '@angular/material/card'
 import { MatInputModule } from '@angular/material/input'
 import { MatTableModule } from '@angular/material/table'
 import { MatPaginatorModule } from '@angular/material/paginator'
-import { MatDialogModule } from '@angular/material/dialog'
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog'
 import { MatDividerModule } from '@angular/material/divider'
 import { MatGridListModule } from '@angular/material/grid-list'
 import { NgMatSearchBarModule } from 'ng-mat-search-bar'
@@ -57,6 +58,8 @@ describe('NavbarComponent', () => {
   let socketIoService: any
   let location: Location
   let loginGuard
+  let dialog: any
+  let dialogRefMock
 
   beforeEach(waitForAsync(() => {
     administrationService = jasmine.createSpyObj('AdministrationService', ['getApplicationVersion'])
@@ -77,6 +80,11 @@ describe('NavbarComponent', () => {
     socketIoService.socket.and.returnValue(mockSocket)
     loginGuard = jasmine.createSpyObj('LoginGuard', ['tokenDecode'])
     loginGuard.tokenDecode.and.returnValue(of(true))
+    dialog = jasmine.createSpyObj('Dialog', ['open'])
+    dialogRefMock = {
+      afterClosed: () => of({})
+    }
+    dialog.open.and.returnValue(dialogRefMock)
 
     TestBed.configureTestingModule({
       declarations: [NavbarComponent, SearchResultComponent],
@@ -114,6 +122,7 @@ describe('NavbarComponent', () => {
         { provide: CookieService, useValue: cookieService },
         { provide: SocketIoService, useValue: socketIoService },
         { provide: LoginGuard, useValue: loginGuard },
+        { provide: MatDialog, useValue: dialog },
         TranslateService
       ]
     })
@@ -280,4 +289,12 @@ describe('NavbarComponent', () => {
     component.changeLanguage('xx')
     expect(translateService.use).toHaveBeenCalledWith('xx')
   })
+
+  it('should show the pop-up window', () => {
+    component.showRansomwareInput()
+    expect(dialog.open.calls.count()).toBe(1)
+    expect(dialog.open.calls.argsFor(0)[0]).toBe(RansomwareInputComponent)
+  })
+
+
 })
