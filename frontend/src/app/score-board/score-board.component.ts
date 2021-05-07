@@ -21,6 +21,7 @@ import { LocalBackupService } from '../Services/local-backup.service'
 import { MatDialog } from '@angular/material/dialog'
 import { CodeSnippetComponent } from '../code-snippet/code-snippet.component'
 import { CodeSnippetService } from '../Services/code-snippet.service'
+import { RansomwareInputComponent } from '../ransomware-input/ransomware-input.component'
 
 library.add(faStar, faGem, faGitter, faGithub, faBtc, faTrophy, faPollH)
 dom.watch()
@@ -355,7 +356,6 @@ export class ScoreBoardComponent implements OnInit {
   }
 
   showCodeSnippet (key: string) {
-    this.click = !this.click;
     this.dialog.open(CodeSnippetComponent, {
     data: {
     key: key
@@ -367,11 +367,15 @@ export class ScoreBoardComponent implements OnInit {
   Start:boolean = true
 
   //onclick toggling both
-  onclick()
-  {
-    this.Start = !this.Start; //not equal to
+  onclick() {
+    this.click = !this.click;
   }
 
-  
+  showRansomwareInput = () => {
+    this.dialog.open(RansomwareInputComponent, {
+      width: '500px',
+      height: 'max-content',
+    })
+  }
 }
 

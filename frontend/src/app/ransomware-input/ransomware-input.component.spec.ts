@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RansomwareInputComponent } from './ransomware-input.component';
+import { TranslateModule } from '@ngx-translate/core'
 
 describe('RansomwareInputComponent', () => {
   let component: RansomwareInputComponent;
@@ -8,7 +9,10 @@ describe('RansomwareInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RansomwareInputComponent ]
+      declarations: [ RansomwareInputComponent ],
+      imports: [
+        TranslateModule.forRoot(),
+      ]
     })
     .compileComponents();
   });

@@ -64,6 +64,7 @@ export class NavbarComponent implements OnInit {
   public scoreBoardVisible: boolean = false
   public shortKeyLang: string = 'placeholder'
   public itemTotal = 0
+  //public ransomwareButtonHidden: boolean = true
 
   @Output() public sidenavToggle = new EventEmitter()
 
