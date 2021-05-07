@@ -21,9 +21,6 @@ import { LocalBackupService } from '../Services/local-backup.service'
 import { MatDialog } from '@angular/material/dialog'
 import { CodeSnippetComponent } from '../code-snippet/code-snippet.component'
 import { CodeSnippetService } from '../Services/code-snippet.service'
-import { RansomwareInputComponent } from '../ransomware-input/ransomware-input.component'
-import { NavbarComponent } from '../navbar/navbar.component'
-
 
 library.add(faStar, faGem, faGitter, faGithub, faBtc, faTrophy, faPollH)
 dom.watch()
