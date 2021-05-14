@@ -300,10 +300,17 @@ describe('ScoreBoardComponent', () => {
     expect(component.showHackingInstructor).toBeTruthy()
   })
 
-  it('Should check if onclick is true', () => {
-    configurationService.getApplicationConfiguration.and.returnValue(of({ onclick:{click:true} }))
+  it('onclick() should turn click to true', () => {
+    configurationService.getApplicationConfiguration.and.returnValue(of({ application: {}, challenges: {} }))
     component.ngOnInit()
-    expect(component.onclick).toBeTruthy()
+    component.onclick()
+    expect(component.click).toBeTruthy()
+  })
+
+  it('Click should start at false', () => {
+    configurationService.getApplicationConfiguration.and.returnValue(of({ application: {}, challenges: {} }))
+    component.ngOnInit()
+    expect(component.click).toBeFalsy()
   })
 
 })
