@@ -4,7 +4,7 @@
   -->
 
   <mat-dialog-content>
-    <div class="container mat-typography" fxLayout="column">
+    <div class="container mat-typography" fxLayout="column" id="decrypt-form">
       <div fxLayout="column" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <h1 id="title" style="color: red"> {{"WEBSITE_ENCRYPTED" | translate}} </h1>
         <h2 id="subtitle" style="color: red"> {{"DATA_ENCRYPTED" | translate}}</h2>
@@ -19,8 +19,8 @@
           </ol>
         <form>
           <label for="dkey">{{"DECRYPTION_KEY_FORM" | translate}}</label><br>
-          <input type="text" id="dkey" name="dkey"><br>
-          <input type="submit" value="Submit">
+          <input id="dkey" #dkey name="dkey" [formControl]="codeControl" matInput placeholder="" aria-label="Decryption key"><br>
+          <input type="submit" value="Submit" id="submit">
         </form>
       </div>
     </div>
