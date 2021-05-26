@@ -1,6 +1,6 @@
 const utils = require('../lib/utils')
 const yaml = require('js-yaml')
-const config = require('config')
+let config = require('config')
 const challenges = require('../data/datacache').challenges
 const PRODUCTS = 'default'
 const { safeLoad, dump } = require('js-yaml')
@@ -20,7 +20,6 @@ module.exports = function ransomware () {
       // Hier de encrypt functie aanroepen en iets returnen?
       if (!config.get('challenges.ransomwareStarted')) {
         encrypt('password')
-
       }
 
       // succesvol
@@ -29,8 +28,7 @@ module.exports = function ransomware () {
       const decryptionCode = req.body?.decryptionCode // eslint-disable-line @typescript-eslint/no-unused-vars
 
       if (config.get('challenges.ransomwareStarted')) {
-        decrypt('password')
-        utils.solve(challenges.ransomwareChallenge)
+        utils.solveIf(challenges.ransomwareChallenge, decrypt('password'), false)
       }
       // TODO schrijf een decrypt functie die de ingevoerde decryptionCode vergelijkt
 
@@ -66,33 +64,44 @@ function encrypt (key) {
     }
     doc.challenges.ransomwareStarted = true
     fs.writeFileSync('config/default.yml', dump(doc))
+    reloadConfig()
   } catch (e) {
     console.log(e)
   }
 }
 
 function decrypt (key) {
-  try {
-    models.Product.findAll().then(products => {
-      for (const product of products) {
+  return () => {
+    try {
+      models.Product.findAll().then(products => {
+        for (const product of products) {
+          const cipher = crypto.createDecipher('AES-128-CBC', key)
+          const enc = Buffer.from(product.name, 'hex')
+          let dec = cipher.update(enc)
+          dec = Buffer.concat([dec, cipher.final()]).toString()
+          product.update({ name: dec })
+        }
+      })
+      const doc = yaml.load(fs.readFileSync('config/default.yml', 'utf8'))
+      for (const p of doc.products) {
         const cipher = crypto.createDecipher('AES-128-CBC', key)
-        const enc = Buffer.from(product.name, 'hex')
+        const enc = Buffer.from(p.name, 'hex')
         let dec = cipher.update(enc)
         dec = Buffer.concat([dec, cipher.final()]).toString()
-        product.update({ name: dec })
+        p.name = dec
       }
-    })
-    const doc = yaml.load(fs.readFileSync('config/default.yml', 'utf8'))
-    for (const p of doc.products) {
-      const cipher = crypto.createDecipher('AES-128-CBC', key)
-      const enc = Buffer.from(p.name, 'hex')
-      let dec = cipher.update(enc)
-      dec = Buffer.concat([dec, cipher.final()]).toString()
-      p.name = dec
+      doc.challenges.ransomwareStarted = false
+      fs.writeFileSync('config/default.yml', dump(doc))
+      reloadConfig()
+      return true
+    } catch (e) {
+      console.log(e)
     }
-    doc.challenges.ransomwareStarted = false
-    fs.writeFileSync('config/default.yml', dump(doc))
-  } catch (e) {
-    console.log(e)
   }
+}
+
+function reloadConfig() {
+  global.NODE_CONFIG = null
+  delete require.cache[require.resolve('config')]
+  config = require('config')
 }
