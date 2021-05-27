@@ -18,6 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar'
 import { BasketService } from '../Services/basket.service'
 import { RansomwareInputComponent } from '../ransomware-input/ransomware-input.component'
 import { MatDialog } from '@angular/material/dialog'
+import { RansomwareService } from '../Services/ransomware.service'
 
 import {
   faBomb,
@@ -64,7 +65,7 @@ export class NavbarComponent implements OnInit {
   public scoreBoardVisible: boolean = false
   public shortKeyLang: string = 'placeholder'
   public itemTotal = 0
-  //public ransomwareButtonHidden: boolean = true
+  public showDecryptButton: boolean = false
 
   @Output() public sidenavToggle = new EventEmitter()
 
@@ -72,9 +73,12 @@ export class NavbarComponent implements OnInit {
     private readonly configurationService: ConfigurationService, private readonly userService: UserService, private readonly ngZone: NgZone,
     private readonly cookieService: CookieService, private readonly router: Router, private readonly translate: TranslateService,
     private readonly io: SocketIoService, private readonly langService: LanguagesService, private readonly loginGuard: LoginGuard,
-    private readonly snackBar: MatSnackBar, private readonly basketService: BasketService) { }
+    private readonly snackBar: MatSnackBar, private readonly basketService: BasketService, private readonly ransomwareService: RansomwareService) { }
 
   ngOnInit () {
+    this.ransomwareService.started.subscribe(hasStarted => {
+      this.showDecryptButton = hasStarted as boolean
+    })
     this.getLanguages()
     this.basketService.getItemTotal().subscribe(x => (this.itemTotal = x))
     this.administrationService.getApplicationVersion().subscribe((version: any) => {
