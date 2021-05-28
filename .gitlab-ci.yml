@@ -4,10 +4,16 @@ include:
 
 test_frisby:
   stage: test
-  image: node:14.17
+  image: ubuntu:latest
+  when: manual
   tags:
   - docker
-  script: npm install --also=dev && npm run frisby
+  script: >
+    # sing Ubuntu
+    curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+    apt-get install -y nodejs
+    npm install --also=dev
+    npm run frisby
 
 
 variables:
