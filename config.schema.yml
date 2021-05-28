@@ -124,6 +124,8 @@ challenges:
     type: string
   safetyOverride:
     type: boolean
+  ransomwareStarted:
+    type: boolean
 hackingInstructor:
   isEnabled:
     type: boolean
