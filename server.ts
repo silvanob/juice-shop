@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: MIT
  */
 import dataErasure from './routes/dataErasure'
+import fs = require('fs')
 const startTime = Date.now()
 const path = require('path')
-import fs = require('fs')
 const morgan = require('morgan')
 const colors = require('colors/safe')
 const finale = require('finale-rest')
@@ -62,6 +62,7 @@ const order = require('./routes/order')
 const verify = require('./routes/verify')
 const recycles = require('./routes/recycles')
 const b2bOrder = require('./routes/b2bOrder')
+const ransomware = require('./routes/ransomware')
 const showProductReviews = require('./routes/showProductReviews')
 const createProductReviews = require('./routes/createProductReviews')
 const updateProductReviews = require('./routes/updateProductReviews')
@@ -372,6 +373,12 @@ restoreOverwrittenFilesWithOriginals().then(() => {
     new RateLimit({ windowMs: 5 * 60 * 1000, max: 100 }),
     twoFactorAuth.verify()
   )
+
+  app.post('/rest/ransomware/decrypt', ransomware())
+  app.get('/rest/ransomware/started', ransomware())
+  // not sure for encrypt, but it can be changed to anything, get, put post.
+  app.post('/rest/ransomware/encrypt', ransomware())
+
   /* Check 2FA Status for the current User */
   app.get('/rest/2fa/status', security.isAuthorized(), twoFactorAuth.status())
   /* Enable 2FA for the current User */
