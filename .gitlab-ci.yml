@@ -2,21 +2,5 @@ include:
   - local: '.gitlab/Dependency-Scanning.gitlab-ci.yml'
   - local: '.gitlab/SAST.gitlab-ci.yml'
 
-test_frisby:
-  stage: test
-  image: ubuntu:latest
-  when: manual
-  tags:
-  - docker
-  script: |
-    # sing Ubuntu
-    apt-get update && apt-get upgrade -y
-    apt-get install curl build-essential -y
-    curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
-    apt-get install -y nodejs
-    npm install --also=dev
-    npm run frisby
-
-
 variables:
   SAST_EXCLUDED_PATHS: "frontend/src/assets/private/**"
