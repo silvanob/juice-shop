@@ -2,5 +2,13 @@ include:
   - local: '.gitlab/Dependency-Scanning.gitlab-ci.yml'
   - local: '.gitlab/SAST.gitlab-ci.yml'
 
+test_frisby:
+  stage: test
+  image: node:14.17
+  tags:
+  - docker
+  script: npm install && npm run frisby
+
+
 variables:
   SAST_EXCLUDED_PATHS: "frontend/src/assets/private/**"
