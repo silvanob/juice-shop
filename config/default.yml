@@ -75,7 +75,6 @@ challenges:
   showSolvedNotifications: true
   showHints: true
   showMitigations: true
-  ransomwareStarted: false
   showCodeSnippets: always # Options: never  solved  always
   restrictToTutorialsFirst: false
   overwriteUrlForProductTamperingChallenge: 'https://owasp.slack.com'
