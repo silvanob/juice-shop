@@ -7,7 +7,7 @@ test_frisby:
   image: node:14.17
   tags:
   - docker
-  script: npm install && npm run frisby
+  script: npm install --also=dev && npm run frisby
 
 
 variables:
