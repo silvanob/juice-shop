@@ -1,3 +1,4 @@
+import models = require('../models/index')
 const utils = require('../lib/utils')
 const yaml = require('js-yaml')
 let config = require('config')
@@ -5,7 +6,6 @@ const challenges = require('../data/datacache').challenges
 const { dump } = require('js-yaml')
 const fs = require('fs')
 const crypto = require('crypto')
-import models = require('../models/index')
 const mongodb = require('../data/mongodb')
 
 module.exports = function ransomware () {
