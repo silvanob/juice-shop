@@ -375,7 +375,7 @@ restoreOverwrittenFilesWithOriginals().then(() => {
   )
 
   app.post('/rest/ransomware/decrypt', ransomware())
-
+  app.get('/rest/ransomware/started', ransomware())
   // not sure for encrypt, but it can be changed to anything, get, put post.
   app.post('/rest/ransomware/encrypt', ransomware())
 
