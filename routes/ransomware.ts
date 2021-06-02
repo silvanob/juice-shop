@@ -31,7 +31,6 @@ module.exports = function ransomware () {
       if (challengeStarted) {
         decrypt('password')
         utils.solve(challenges.ransomwareChallenge)
-        // utils.solveIf(challenges.ransomwareChallenge, decrypt(decryptionCode), true)
       }
       // TODO schrijf een decrypt functie die de ingevoerde decryptionCode vergelijkt
 
