@@ -315,3 +315,6 @@ ctf:
     lfrChallenge:
       name: Ireland
       code: IE
+    ransomwareChallenge:
+      name: Finland
+      code: FI
