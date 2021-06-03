@@ -1,3 +1,4 @@
+/* eslint-disable node/no-deprecated-api */
 import models = require('../models/index')
 const utils = require('../lib/utils')
 const yaml = require('js-yaml')
