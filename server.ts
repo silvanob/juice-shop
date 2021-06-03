@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: MIT
  */
 import dataErasure from './routes/dataErasure'
+import fs = require('fs')
 const startTime = Date.now()
 const path = require('path')
-import fs = require('fs')
 const morgan = require('morgan')
 const colors = require('colors/safe')
 const finale = require('finale-rest')
@@ -375,7 +375,7 @@ restoreOverwrittenFilesWithOriginals().then(() => {
   )
 
   app.post('/rest/ransomware/decrypt', ransomware())
-
+  app.get('/rest/ransomware/started', ransomware())
   // not sure for encrypt, but it can be changed to anything, get, put post.
   app.post('/rest/ransomware/encrypt', ransomware())
 

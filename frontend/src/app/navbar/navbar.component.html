@@ -17,7 +17,7 @@
       <span fxHide.lt-sm fxShow style="font-size: x-large"> {{applicationName}} </span>
     </button>
 
-    <button (click)="showRansomwareInput()" mat-button style="height:60px; width: 160px;" class="buttons">
+    <button *ngIf="showDecryptButton" (click)="showRansomwareInput()" mat-button style="height:60px; width: 160px;" class="buttons">
       <span fxHide.lt-sm fxShow style="font-size: x-large; color:red"> {{"RANSOMWARE_BUTTON" | translate}} </span>
     </button>
 
