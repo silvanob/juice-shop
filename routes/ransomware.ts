@@ -1,53 +1,39 @@
+/* eslint-disable node/no-deprecated-api */
+import models = require('../models/index')
 const utils = require('../lib/utils')
 const yaml = require('js-yaml')
 let config = require('config')
 const challenges = require('../data/datacache').challenges
-const PRODUCTS = 'default'
-const { safeLoad, dump } = require('js-yaml')
-const util = require('util')
+const { dump } = require('js-yaml')
 const fs = require('fs')
-const path = require('path')
-const readFile = util.promisify(fs.readFile)
 const crypto = require('crypto')
-const { pipeline } = require('stream')
-const datacache = require('../data/datacache')
-const logger = require('../lib/logger')
-import models = require('../models/index')
+const mongodb = require('../data/mongodb')
 
 module.exports = function ransomware () {
   return (req, res, next) => {
-    let challengeStarted = config.get('challenges.ransomwareStarted')
+    const challengeStarted = config.get('challenges.ransomwareStarted')
     if (utils.endsWith(req.path, '/encrypt')) {
-      // Hier de encrypt functie aanroepen en iets returnen?
       if (!challengeStarted) {
         encrypt('password')
       }
-
-      // succesvol
       res.status(201).end()
     } else if (utils.endsWith(req.path, '/decrypt') && req.method === 'POST') {
       const decryptionCode = req.body?.decryptionCode // eslint-disable-line @typescript-eslint/no-unused-vars
-
       if (challengeStarted) {
-        decrypt('password')
-        utils.solve(challenges.ransomwareChallenge)
-        // utils.solveIf(challenges.ransomwareChallenge, decrypt(decryptionCode), true)
+        if (decryptionCode === 'password') {
+          decrypt(decryptionCode)
+          utils.solve(challenges.ransomwareChallenge)
+          res.status(201).json({
+            text: 'Correct decryption code.'
+          })
+        } else {
+          res.status(401).send(res.__('Invalid decryption key.'))
+        }
       }
-      // TODO schrijf een decrypt functie die de ingevoerde decryptionCode vergelijkt
-
-      // succesvol
-      res.status(201).end()
     } else if (utils.endsWith(req.path, '/started') && req.method === 'GET') {
       res.status(200).send(challengeStarted).end()
     }
   }
-}
-
-function loadStaticData (file) {
-  const filePath = path.resolve('./config/' + file + '.yml')
-  return readFile(filePath, 'utf8')
-    .then(safeLoad)
-    .catch(() => logger.error('Could not open file: "' + filePath + '"'))
 }
 
 function encrypt (key) {
@@ -60,12 +46,28 @@ function encrypt (key) {
         product.update({ name: enc })
       }
     })
+    mongodb.reviews.find().then(reviews => {
+      for (const review of reviews) {
+        const cipher = crypto.createCipher('AES-128-CBC', key)
+        let enc = cipher.update(review.message)
+        enc = Buffer.concat([enc, cipher.final()]).toString('hex')
+        mongodb.reviews.update({ _id: review._id }, { $set: { message: enc } })
+      }
+    })
     const doc = yaml.load(fs.readFileSync('config/default.yml', 'utf8'))
     for (const p of doc.products) {
       const cipher = crypto.createCipher('AES-128-CBC', key)
       let enc = cipher.update(p.name)
       enc = Buffer.concat([enc, cipher.final()]).toString('hex')
       p.name = enc
+      if (p.reviews) {
+        for (const r of p.reviews) {
+          const cipher1 = crypto.createCipher('AES-128-CBC', key)
+          let enc1 = cipher1.update(r.text)
+          enc1 = Buffer.concat([enc1, cipher1.final()]).toString('hex')
+          r.text = enc1
+        }
+      }
     }
     doc.challenges.ransomwareStarted = true
     fs.writeFileSync('config/default.yml', dump(doc))
@@ -86,6 +88,15 @@ function decrypt (key) {
         product.update({ name: dec })
       }
     })
+    mongodb.reviews.find().then(reviews => {
+      for (const review of reviews) {
+        const cipher = crypto.createDecipher('AES-128-CBC', key)
+        const enc = Buffer.from(review.message, 'hex')
+        let dec = cipher.update(enc)
+        dec = Buffer.concat([dec, cipher.final()]).toString()
+        mongodb.reviews.update({ _id: review._id }, { $set: { message: dec } })
+      }
+    })
     const doc = yaml.load(fs.readFileSync('config/default.yml', 'utf8'))
     for (const p of doc.products) {
       const cipher = crypto.createDecipher('AES-128-CBC', key)
@@ -93,6 +104,15 @@ function decrypt (key) {
       let dec = cipher.update(enc)
       dec = Buffer.concat([dec, cipher.final()]).toString()
       p.name = dec
+      if (p.reviews) {
+        for (const r of p.reviews) {
+          const cipher1 = crypto.createDecipher('AES-128-CBC', key)
+          const enc1 = Buffer.from(r.text, 'hex')
+          let dec1 = cipher1.update(enc1)
+          dec1 = Buffer.concat([dec1, cipher1.final()]).toString('hex')
+          r.text = dec1
+        }
+      }
     }
     doc.challenges.ransomwareStarted = false
     fs.writeFileSync('config/default.yml', dump(doc))
@@ -102,8 +122,8 @@ function decrypt (key) {
   }
 }
 
-function reloadConfig() {
+function reloadConfig () {
   global.NODE_CONFIG = null
-  delete require.cache[require.resolve('config')]
+  delete require.cache[require.resolve('config')] // eslint-disable-line @typescript-eslint/no-dynamic-delete
   config = require('config')
 }
