@@ -10,7 +10,7 @@ describe('/rest/ransomware', () => {
       return frisby.post(REST_URL + '/ransomware/decrypt', {
         headers: jsonHeader,
         body: {
-          decryptionCode: '5'
+          decryptionCode: 'test'
         }
       })
         .expect('status', 201)
