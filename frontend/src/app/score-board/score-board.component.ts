@@ -91,7 +91,7 @@ export class ScoreBoardComponent implements OnInit {
     this.ransomwareService.started.subscribe((hasStarted) => {
       this.showDecryptButton = hasStarted as boolean;
       if (hasStarted == true) {
-        this.click = !this.click;
+        this.click = !this.click;        
       } else {
         this.click = this.click;
       }
@@ -516,6 +516,14 @@ export class ScoreBoardComponent implements OnInit {
   //onclick toggling both
   onclick() {
     this.click = !this.click;
+    const myObserver = {
+      next: () => {
+      },
+      error: ({error}) => {
+        console.table(error)
+      }
+    };
+    this.ransomwareService.encrypt().subscribe(myObserver);
   }
 
   showRansomwareInput = () => {

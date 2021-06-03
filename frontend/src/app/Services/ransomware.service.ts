@@ -16,6 +16,10 @@ export class RansomwareService {
     return this.http.post(this.host + '/decrypt', { decryptionCode: decryptionCode }).pipe(catchError((err) => { throw err }))
   }
 
+  encrypt () {
+    return this.http.post(this.host + '/encrypt', {}).pipe(catchError((err) => { throw err }))
+  }
+
   get started() {
     return this.http.get(this.host + '/started').pipe(catchError((err) => { throw err }))
   }
