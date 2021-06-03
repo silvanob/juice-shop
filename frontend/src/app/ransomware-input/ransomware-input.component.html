@@ -4,7 +4,7 @@
   -->
 
   <mat-dialog-content>
-    <div class="container mat-typography" fxLayout="column">
+    <div class="container mat-typography" fxLayout="column" id="decrypt-form">
       <div fxLayout="column" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <h1 id="title" style="color: red"> {{"WEBSITE_ENCRYPTED" | translate}} </h1>
         <h2 id="subtitle" style="color: red"> {{"DATA_ENCRYPTED" | translate}}</h2>
@@ -17,11 +17,19 @@
             <li> {{"SUBMIT_KEY" | translate}} </li>
             <li> {{"DATA_DECRYPTED" | translate}} </li>
           </ol>
-        <form>
+        <div class="error" *ngIf="error">{{error}}</div>  
+        <div class="success" *ngIf="success">{{success}}</div>  
+        <div class="form-container" id="decrypt-form">
           <label for="dkey">{{"DECRYPTION_KEY_FORM" | translate}}</label><br>
-          <input type="text" id="dkey" name="dkey"><br>
-          <input type="submit" value="Submit">
-        </form>
+          <input id="dkey" #dkey name="dkey" [formControl]="codeControl" (focus)="this.error=null" placeholder="" aria-label="Decryption key"><br>
+          <!-- <input type="submit" value="Submit" id="submit" (click)="send()"> -->
+          <button type="submit" id="submit" mat-raised-button color="primary" (click)="send()" aria-label="Login">
+            <mat-icon>
+              exit_to_app
+            </mat-icon>
+            {{'Submit' | translate}}
+          </button>
+        </div>
       </div>
     </div>
   </mat-dialog-content>

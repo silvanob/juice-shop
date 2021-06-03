@@ -422,5 +422,6 @@
   "DATA_DECRYPTED": "Your data will automatically be decrypted.",
   "DECRYPTION_KEY_FORM": "Decryption key:",
   "LOADING_CODE_SNIPPET": "Loading code snippet...",
-  "START_BUTTON": "Start"
+  "START_BUTTON": "Start",
+  "Submit": "Submit"
 }

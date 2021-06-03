@@ -1,3 +1,4 @@
+/* eslint-disable node/no-deprecated-api */
 import models = require('../models/index')
 const utils = require('../lib/utils')
 const yaml = require('js-yaml')
@@ -12,25 +13,23 @@ module.exports = function ransomware () {
   return (req, res, next) => {
     const challengeStarted = config.get('challenges.ransomwareStarted')
     if (utils.endsWith(req.path, '/encrypt')) {
-      // Hier de encrypt functie aanroepen en iets returnen?
       if (!challengeStarted) {
         encrypt('password')
       }
-
-      // succesvol
       res.status(201).end()
     } else if (utils.endsWith(req.path, '/decrypt') && req.method === 'POST') {
       const decryptionCode = req.body?.decryptionCode // eslint-disable-line @typescript-eslint/no-unused-vars
-
       if (challengeStarted) {
-        decrypt('password')
-        utils.solve(challenges.ransomwareChallenge)
-        // utils.solveIf(challenges.ransomwareChallenge, decrypt(decryptionCode), true)
+        if (decryptionCode === 'password') {
+          decrypt(decryptionCode)
+          utils.solve(challenges.ransomwareChallenge)
+          res.status(201).json({
+            text: 'Correct decryption code.'
+          })
+        } else {
+          res.status(401).send(res.__('Invalid decryption key.'))
+        }
       }
-      // TODO schrijf een decrypt functie die de ingevoerde decryptionCode vergelijkt
-
-      // succesvol
-      res.status(201).end()
     } else if (utils.endsWith(req.path, '/started') && req.method === 'GET') {
       res.status(200).send(challengeStarted).end()
     }
