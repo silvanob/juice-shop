@@ -214,7 +214,7 @@ export class NavbarComponent implements OnInit {
   showRansomwareInput = () => {
     this.dialog.open(RansomwareInputComponent, {
       width: '500px',
-      height: 'max-content',
+      height: 'max-content'
     })
   }
 

@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core'
 import { FormControl, Validators } from '@angular/forms'
 import { FormSubmitService } from '../Services/form-submit.service'
 import { Router } from '@angular/router'
@@ -16,7 +16,7 @@ export class RansomwareInputComponent implements OnInit {
   public decryptionCode: string
   public error: any
   public success: any
-  constructor(private readonly formSubmitService: FormSubmitService, private readonly router: Router, private readonly ransomwareService: RansomwareService, private readonly ngZone: NgZone, private readonly dialogRef: MatDialogRef<RansomwareInputComponent>) {}
+  constructor (private readonly formSubmitService: FormSubmitService, private readonly router: Router, private readonly ransomwareService: RansomwareService, private readonly ngZone: NgZone, private readonly dialogRef: MatDialogRef<RansomwareInputComponent>) {}
 
   ngOnInit () {
     this.formSubmitService.attachEnterKeyHandler('decrypt-form', 'submit', () => this.send())
@@ -24,22 +24,21 @@ export class RansomwareInputComponent implements OnInit {
 
   send () {
     const myObserver = {
-      next: ({text}) => {
+      next: ({ text }) => {
         console.log(text)
         this.success = text
         setTimeout(() => {
           this.ngZone.run(async () => await this.router.navigate(['/search']))
-          this.dialogRef.close();
-        }, 3000);  
+          this.dialogRef.close()
+        }, 3000)
       },
-      error: ({error}) => {
+      error: ({ error }) => {
         console.table(error)
         this.error = error
       }
-    };
+    }
     this.decryptionCode = this.codeControl.value
-    this.error = ""
+    this.error = ''
     this.ransomwareService.decrypt(this.decryptionCode).subscribe(myObserver)
   }
-
 }

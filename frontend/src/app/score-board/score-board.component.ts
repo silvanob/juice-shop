@@ -3,77 +3,78 @@
  * SPDX-License-Identifier: MIT
  */
 
-import { MatTableDataSource } from "@angular/material/table";
-import { DomSanitizer } from "@angular/platform-browser";
-import { ChallengeService } from "../Services/challenge.service";
-import { ConfigurationService } from "../Services/configuration.service";
-import { Component, NgZone, OnInit } from "@angular/core";
-import { SocketIoService } from "../Services/socket-io.service";
-import { NgxSpinnerService } from "ngx-spinner";
+import { MatTableDataSource } from '@angular/material/table'
+import { DomSanitizer } from '@angular/platform-browser'
+import { ChallengeService } from '../Services/challenge.service'
+import { ConfigurationService } from '../Services/configuration.service'
+import { Component, NgZone, OnInit } from '@angular/core'
+import { SocketIoService } from '../Services/socket-io.service'
+import { NgxSpinnerService } from 'ngx-spinner'
 
-import { dom, library } from "@fortawesome/fontawesome-svg-core";
-import { faStar, faTrophy, faPollH } from "@fortawesome/free-solid-svg-icons";
-import { faGem } from "@fortawesome/free-regular-svg-icons";
-import { faBtc, faGithub, faGitter } from "@fortawesome/free-brands-svg-icons";
-import { Challenge } from "../Models/challenge.model";
-import { TranslateService } from "@ngx-translate/core";
-import { LocalBackupService } from "../Services/local-backup.service";
-import { MatDialog } from "@angular/material/dialog";
-import { CodeSnippetComponent } from "../code-snippet/code-snippet.component";
-import { CodeSnippetService } from "../Services/code-snippet.service";
-import { RansomwareInputComponent } from "../ransomware-input/ransomware-input.component";
-import { RansomwareService } from "../Services/ransomware.service";
+import { dom, library } from '@fortawesome/fontawesome-svg-core'
+import { faStar, faTrophy, faPollH } from '@fortawesome/free-solid-svg-icons'
+import { faGem } from '@fortawesome/free-regular-svg-icons'
+import { faBtc, faGithub, faGitter } from '@fortawesome/free-brands-svg-icons'
+import { Challenge } from '../Models/challenge.model'
+import { TranslateService } from '@ngx-translate/core'
+import { LocalBackupService } from '../Services/local-backup.service'
+import { MatDialog } from '@angular/material/dialog'
+import { CodeSnippetComponent } from '../code-snippet/code-snippet.component'
+import { CodeSnippetService } from '../Services/code-snippet.service'
+import { RansomwareInputComponent } from '../ransomware-input/ransomware-input.component'
+import { RansomwareService } from '../Services/ransomware.service'
 
-library.add(faStar, faGem, faGitter, faGithub, faBtc, faTrophy, faPollH);
-dom.watch();
+library.add(faStar, faGem, faGitter, faGithub, faBtc, faTrophy, faPollH)
+dom.watch()
 
 @Component({
-  selector: "app-score-board",
-  templateUrl: "./score-board.component.html",
-  styleUrls: ["./score-board.component.scss"],
+  selector: 'app-score-board',
+  templateUrl: './score-board.component.html',
+  styleUrls: ['./score-board.component.scss']
 })
 export class ScoreBoardComponent implements OnInit {
-  public availableDifficulties: number[] = [1, 2, 3, 4, 5, 6];
-  public displayedDifficulties: number[] = [1];
-  public availableChallengeCategories: string[] = [];
-  public displayedChallengeCategories: string[] = [];
-  public toggledMajorityOfDifficulties: boolean = false;
-  public toggledMajorityOfCategories: boolean = true;
-  public showSolvedChallenges: boolean = true;
-  public numDisabledChallenges: number = 0;
-  public showDisabledChallenges: boolean = false;
-  public showOnlyTutorialChallenges: boolean = false;
-  public restrictToTutorialsFirst: boolean = false;
-  public allTutorialsCompleted: boolean = false;
-  public isLastTutorialsTier: boolean = false;
-  public tutorialsTier: number = 1;
-  public disabledEnv?: string;
+  public availableDifficulties: number[] = [1, 2, 3, 4, 5, 6]
+  public displayedDifficulties: number[] = [1]
+  public availableChallengeCategories: string[] = []
+  public displayedChallengeCategories: string[] = []
+  public toggledMajorityOfDifficulties: boolean = false
+  public toggledMajorityOfCategories: boolean = true
+  public showSolvedChallenges: boolean = true
+  public numDisabledChallenges: number = 0
+  public showDisabledChallenges: boolean = false
+  public showOnlyTutorialChallenges: boolean = false
+  public restrictToTutorialsFirst: boolean = false
+  public allTutorialsCompleted: boolean = false
+  public isLastTutorialsTier: boolean = false
+  public tutorialsTier: number = 1
+  public disabledEnv?: string
   public displayedColumns = [
-    "name",
-    "difficulty",
-    "description",
-    "category",
-    "tags",
-    "status",
-  ];
-  public offsetValue = ["100%", "100%", "100%", "100%", "100%", "100%"];
-  public allowRepeatNotifications: boolean = false;
-  public showChallengeHints: boolean = true;
-  public showVulnerabilityMitigations: boolean = true;
-  public showCodeSnippets: string = "solved";
-  public showHackingInstructor: boolean = true;
-  public challenges: Challenge[] = [];
-  public percentChallengesSolved: string = "0";
-  public solvedChallengesOfDifficulty: Challenge[][] = [[], [], [], [], [], []];
-  public totalChallengesOfDifficulty: Challenge[][] = [[], [], [], [], [], []];
-  public showContributionInfoBox: boolean = true;
-  public questionnaireUrl: string = "https://forms.gle/2Tr5m1pqnnesApxN8";
-  public appName: string = "OWASP Juice Shop";
-  public localBackupEnabled: boolean = true;
-  public showDecryptButton: boolean = false;
-  public click: boolean = false;
+    'name',
+    'difficulty',
+    'description',
+    'category',
+    'tags',
+    'status'
+  ]
 
-  constructor(
+  public offsetValue = ['100%', '100%', '100%', '100%', '100%', '100%']
+  public allowRepeatNotifications: boolean = false
+  public showChallengeHints: boolean = true
+  public showVulnerabilityMitigations: boolean = true
+  public showCodeSnippets: string = 'solved'
+  public showHackingInstructor: boolean = true
+  public challenges: Challenge[] = []
+  public percentChallengesSolved: string = '0'
+  public solvedChallengesOfDifficulty: Challenge[][] = [[], [], [], [], [], []]
+  public totalChallengesOfDifficulty: Challenge[][] = [[], [], [], [], [], []]
+  public showContributionInfoBox: boolean = true
+  public questionnaireUrl: string = 'https://forms.gle/2Tr5m1pqnnesApxN8'
+  public appName: string = 'OWASP Juice Shop'
+  public localBackupEnabled: boolean = true
+  public showDecryptButton: boolean = false
+  public click: boolean = false
+
+  constructor (
     private readonly configurationService: ConfigurationService,
     private readonly challengeService: ChallengeService,
     private readonly codeSnippetService: CodeSnippetService,
@@ -87,60 +88,58 @@ export class ScoreBoardComponent implements OnInit {
     private readonly ransomwareService: RansomwareService
   ) {}
 
-  ngOnInit() {
+  ngOnInit () {
     this.ransomwareService.started.subscribe((hasStarted) => {
-      this.showDecryptButton = hasStarted as boolean;
-      if (hasStarted == true) {
-        this.click = !this.click;        
-      } else {
-        this.click = this.click;
+      this.showDecryptButton = hasStarted as boolean
+      if (hasStarted === true) {
+        this.click = !this.click
       }
-    });
-    this.spinner.show();
+    })
+    this.spinner.show()
 
-    this.displayedDifficulties = localStorage.getItem("displayedDifficulties")
-      ? JSON.parse(String(localStorage.getItem("displayedDifficulties")))
-      : [1];
-    this.showSolvedChallenges = localStorage.getItem("showSolvedChallenges")
-      ? JSON.parse(String(localStorage.getItem("showSolvedChallenges")))
-      : true;
-    this.showDisabledChallenges = localStorage.getItem("showDisabledChallenges")
-      ? JSON.parse(String(localStorage.getItem("showDisabledChallenges")))
-      : false;
+    this.displayedDifficulties = localStorage.getItem('displayedDifficulties')
+      ? JSON.parse(String(localStorage.getItem('displayedDifficulties')))
+      : [1]
+    this.showSolvedChallenges = localStorage.getItem('showSolvedChallenges')
+      ? JSON.parse(String(localStorage.getItem('showSolvedChallenges')))
+      : true
+    this.showDisabledChallenges = localStorage.getItem('showDisabledChallenges')
+      ? JSON.parse(String(localStorage.getItem('showDisabledChallenges')))
+      : false
 
     this.configurationService.getApplicationConfiguration().subscribe(
       (config) => {
         this.allowRepeatNotifications =
           config.challenges.showSolvedNotifications &&
-          config.ctf?.showFlagsInNotifications;
-        this.showChallengeHints = config.challenges.showHints;
-        this.showVulnerabilityMitigations = config.challenges.showMitigations;
-        this.showCodeSnippets = config.challenges.showCodeSnippets;
-        this.showHackingInstructor = config.hackingInstructor?.isEnabled;
-        this.showContributionInfoBox = config.application.showGitHubLinks;
-        this.questionnaireUrl = config.application.social?.questionnaireUrl;
-        this.appName = config.application.name;
+          config.ctf?.showFlagsInNotifications
+        this.showChallengeHints = config.challenges.showHints
+        this.showVulnerabilityMitigations = config.challenges.showMitigations
+        this.showCodeSnippets = config.challenges.showCodeSnippets
+        this.showHackingInstructor = config.hackingInstructor?.isEnabled
+        this.showContributionInfoBox = config.application.showGitHubLinks
+        this.questionnaireUrl = config.application.social?.questionnaireUrl
+        this.appName = config.application.name
         this.restrictToTutorialsFirst =
-          config.challenges.restrictToTutorialsFirst;
+          config.challenges.restrictToTutorialsFirst
         this.showOnlyTutorialChallenges = localStorage.getItem(
-          "showOnlyTutorialChallenges"
+          'showOnlyTutorialChallenges'
         )
           ? JSON.parse(
-              String(localStorage.getItem("showOnlyTutorialChallenges"))
-            )
-          : this.restrictToTutorialsFirst;
-        this.localBackupEnabled = config.application.localBackupEnabled;
-        this.challengeService.find({ sort: "name" }).subscribe(
+            String(localStorage.getItem('showOnlyTutorialChallenges'))
+          )
+          : this.restrictToTutorialsFirst
+        this.localBackupEnabled = config.application.localBackupEnabled
+        this.challengeService.find({ sort: 'name' }).subscribe(
           (challenges) => {
             this.codeSnippetService
               .challenges()
               .subscribe((challengesWithCodeSnippet) => {
-                this.challenges = challenges;
+                this.challenges = challenges
                 for (let i = 0; i < this.challenges.length; i++) {
-                  this.augmentHintText(this.challenges[i]);
-                  this.trustDescriptionHtml(this.challenges[i]);
-                  if (this.challenges[i].name === "Score Board") {
-                    this.challenges[i].solved = true;
+                  this.augmentHintText(this.challenges[i])
+                  this.trustDescriptionHtml(this.challenges[i])
+                  if (this.challenges[i].name === 'Score Board') {
+                    this.challenges[i].solved = true
                   }
                   if (
                     !this.availableChallengeCategories.includes(
@@ -149,387 +148,384 @@ export class ScoreBoardComponent implements OnInit {
                   ) {
                     this.availableChallengeCategories.push(
                       challenges[i].category
-                    );
+                    )
                   }
                   if (this.showHackingInstructor) {
                     import(
-                      /* webpackChunkName: "tutorial" */ "../../hacking-instructor"
+                      /* webpackChunkName: "tutorial" */ '../../hacking-instructor'
                     ).then((module) => {
                       challenges[i].hasTutorial = module.hasInstructions(
                         challenges[i].name
-                      );
-                    });
+                      )
+                    })
                   }
                   challenges[i].hasSnippet =
-                    challengesWithCodeSnippet.indexOf(challenges[i].key) > -1;
+                    challengesWithCodeSnippet.indexOf(challenges[i].key) > -1
                 }
                 this.availableChallengeCategories.sort((a, b) =>
                   a.localeCompare(b)
-                );
+                )
                 this.displayedChallengeCategories = localStorage.getItem(
-                  "displayedChallengeCategories"
+                  'displayedChallengeCategories'
                 )
                   ? JSON.parse(
-                      String(
-                        localStorage.getItem("displayedChallengeCategories")
-                      )
+                    String(
+                      localStorage.getItem('displayedChallengeCategories')
                     )
-                  : this.availableChallengeCategories;
-                this.calculateProgressPercentage();
-                this.populateFilteredChallengeLists();
-                this.calculateGradientOffsets(challenges);
-                this.calculateTutorialTier(challenges);
+                  )
+                  : this.availableChallengeCategories
+                this.calculateProgressPercentage()
+                this.populateFilteredChallengeLists()
+                this.calculateGradientOffsets(challenges)
+                this.calculateTutorialTier(challenges)
 
                 this.toggledMajorityOfDifficulties =
-                  this.determineToggledMajorityOfDifficulties();
+                  this.determineToggledMajorityOfDifficulties()
                 this.toggledMajorityOfCategories =
-                  this.determineToggledMajorityOfCategories();
+                  this.determineToggledMajorityOfCategories()
 
                 if (this.showOnlyTutorialChallenges) {
                   this.challenges.sort((a, b) => {
-                    return a.tutorialOrder - b.tutorialOrder;
-                  });
+                    return a.tutorialOrder - b.tutorialOrder
+                  })
                 }
 
-                this.spinner.hide();
-              });
+                this.spinner.hide()
+              })
           },
           (err) => {
-            this.challenges = [];
-            console.log(err);
+            this.challenges = []
+            console.log(err)
           }
-        );
+        )
       },
       (err) => console.log(err)
-    );
+    )
 
     this.ngZone.runOutsideAngular(() => {
-      this.io.socket().on("challenge solved", (data: any) => {
+      this.io.socket().on('challenge solved', (data: any) => {
         if (data?.challenge) {
           for (let i = 0; i < this.challenges.length; i++) {
             if (this.challenges[i].name === data.name) {
-              this.challenges[i].solved = true;
-              break;
+              this.challenges[i].solved = true
+              break
             }
           }
-          this.calculateProgressPercentage();
-          this.populateFilteredChallengeLists();
-          this.calculateGradientOffsets(this.challenges);
-          this.calculateTutorialTier(this.challenges);
+          this.calculateProgressPercentage()
+          this.populateFilteredChallengeLists()
+          this.calculateGradientOffsets(this.challenges)
+          this.calculateTutorialTier(this.challenges)
         }
-      });
-    });
+      })
+    })
   }
 
-  augmentHintText(challenge: Challenge) {
+  augmentHintText (challenge: Challenge) {
     if (challenge.disabledEnv) {
-      this.numDisabledChallenges++;
-      this.disabledEnv = challenge.disabledEnv;
+      this.numDisabledChallenges++
+      this.disabledEnv = challenge.disabledEnv
       this.translate
-        .get("CHALLENGE_UNAVAILABLE", { env: challenge.disabledEnv })
+        .get('CHALLENGE_UNAVAILABLE', { env: challenge.disabledEnv })
         .subscribe(
           (challengeUnavailable) => {
-            challenge.hint = challengeUnavailable;
+            challenge.hint = challengeUnavailable
           },
           (translationId) => {
-            challenge.hint = translationId;
+            challenge.hint = translationId
           }
-        );
+        )
     } else if (challenge.hintUrl) {
       if (challenge.hint) {
-        this.translate.get("CLICK_FOR_MORE_HINTS").subscribe(
+        this.translate.get('CLICK_FOR_MORE_HINTS').subscribe(
           (clickForMoreHints: string) => {
-            challenge.hint += ` ${clickForMoreHints}`;
+            challenge.hint += ` ${clickForMoreHints}`
           },
           (translationId: string) => {
-            challenge.hint += ` ${translationId}`;
+            challenge.hint += ` ${translationId}`
           }
-        );
+        )
       } else {
-        this.translate.get("CLICK_TO_OPEN_HINTS").subscribe(
+        this.translate.get('CLICK_TO_OPEN_HINTS').subscribe(
           (clickToOpenHints) => {
-            challenge.hint = clickToOpenHints;
+            challenge.hint = clickToOpenHints
           },
           (translationId) => {
-            challenge.hint = translationId;
+            challenge.hint = translationId
           }
-        );
+        )
       }
     }
   }
 
-  trustDescriptionHtml(challenge: Challenge) {
+  trustDescriptionHtml (challenge: Challenge) {
     challenge.description = this.sanitizer.bypassSecurityTrustHtml(
       challenge.description as string
-    );
+    )
   }
 
-  calculateProgressPercentage() {
-    let solvedChallenges = 0;
+  calculateProgressPercentage () {
+    let solvedChallenges = 0
     for (let i = 0; i < this.challenges.length; i++) {
-      solvedChallenges += this.challenges[i].solved ? 1 : 0;
+      solvedChallenges += this.challenges[i].solved ? 1 : 0
     }
     this.percentChallengesSolved = (
       (100 * solvedChallenges) /
       this.challenges.length
-    ).toFixed(0);
+    ).toFixed(0)
   }
 
-  calculateTutorialTier(challenges: Challenge[]) {
-    this.allTutorialsCompleted = true;
-    this.isLastTutorialsTier = true;
-    this.tutorialsTier = 1;
+  calculateTutorialTier (challenges: Challenge[]) {
+    this.allTutorialsCompleted = true
+    this.isLastTutorialsTier = true
+    this.tutorialsTier = 1
 
     for (let difficulty = 1; difficulty <= 6; difficulty++) {
       const challengesWithTutorial = challenges.filter(
         (c) => c.tutorialOrder && c.difficulty === difficulty
-      ).length;
+      ).length
       const solvedChallengesWithTutorial = challenges.filter(
         (c) => c.tutorialOrder && c.difficulty === difficulty && c.solved
-      ).length;
+      ).length
       this.allTutorialsCompleted =
         this.allTutorialsCompleted &&
-        challengesWithTutorial === solvedChallengesWithTutorial;
+        challengesWithTutorial === solvedChallengesWithTutorial
       if (
         this.tutorialsTier === difficulty &&
         challengesWithTutorial === solvedChallengesWithTutorial
-      )
-        this.tutorialsTier++;
+      ) { this.tutorialsTier++ }
     }
     if (!this.allTutorialsCompleted) {
       this.isLastTutorialsTier =
         challenges.filter(
           (c) =>
             c.tutorialOrder && !c.solved && c.difficulty > this.tutorialsTier
-        ).length === 0;
+        ).length === 0
       for (let tier = 1; tier <= this.tutorialsTier; tier++) {
-        if (!this.displayedDifficulties.includes(tier))
-          this.toggleDifficulty(this.tutorialsTier);
+        if (!this.displayedDifficulties.includes(tier)) { this.toggleDifficulty(this.tutorialsTier) }
       }
     }
   }
 
-  calculateGradientOffsets(challenges: Challenge[]) {
+  calculateGradientOffsets (challenges: Challenge[]) {
     for (let difficulty = 1; difficulty <= 6; difficulty++) {
       this.offsetValue[difficulty - 1] = this.calculateGradientOffset(
         challenges,
         difficulty
-      );
+      )
     }
   }
 
-  calculateGradientOffset(challenges: Challenge[], difficulty: number) {
-    let solved = 0;
-    let total = 0;
+  calculateGradientOffset (challenges: Challenge[], difficulty: number) {
+    let solved = 0
+    let total = 0
 
     for (let i = 0; i < challenges.length; i++) {
       if (challenges[i].difficulty === difficulty) {
-        total++;
+        total++
         if (challenges[i].solved) {
-          solved++;
+          solved++
         }
       }
     }
 
-    let offset: any = Math.round((solved * 100) / total);
-    offset = 100 - offset;
-    return `${+offset}%`;
+    let offset: any = Math.round((solved * 100) / total)
+    offset = 100 - offset
+    return `${+offset}%`
   }
 
-  toggleDifficulty(difficulty: number) {
+  toggleDifficulty (difficulty: number) {
     if (!this.displayedDifficulties.includes(difficulty)) {
-      this.displayedDifficulties.push(difficulty);
+      this.displayedDifficulties.push(difficulty)
     } else {
       this.displayedDifficulties = this.displayedDifficulties.filter(
         (c) => c !== difficulty
-      );
+      )
     }
     localStorage.setItem(
-      "displayedDifficulties",
+      'displayedDifficulties',
       JSON.stringify(this.displayedDifficulties)
-    );
+    )
     this.toggledMajorityOfDifficulties =
-      this.determineToggledMajorityOfDifficulties();
+      this.determineToggledMajorityOfDifficulties()
   }
 
-  toggleAllDifficulty() {
+  toggleAllDifficulty () {
     if (this.toggledMajorityOfDifficulties) {
-      this.displayedDifficulties = [];
-      this.toggledMajorityOfDifficulties = false;
+      this.displayedDifficulties = []
+      this.toggledMajorityOfDifficulties = false
     } else {
-      this.displayedDifficulties = this.availableDifficulties;
-      this.toggledMajorityOfDifficulties = true;
+      this.displayedDifficulties = this.availableDifficulties
+      this.toggledMajorityOfDifficulties = true
     }
     localStorage.setItem(
-      "displayedDifficulties",
+      'displayedDifficulties',
       JSON.stringify(this.displayedDifficulties)
-    );
+    )
   }
 
-  toggleShowSolvedChallenges() {
-    this.showSolvedChallenges = !this.showSolvedChallenges;
+  toggleShowSolvedChallenges () {
+    this.showSolvedChallenges = !this.showSolvedChallenges
     localStorage.setItem(
-      "showSolvedChallenges",
+      'showSolvedChallenges',
       JSON.stringify(this.showSolvedChallenges)
-    );
+    )
   }
 
-  toggleShowDisabledChallenges() {
-    this.showDisabledChallenges = !this.showDisabledChallenges;
+  toggleShowDisabledChallenges () {
+    this.showDisabledChallenges = !this.showDisabledChallenges
     localStorage.setItem(
-      "showDisabledChallenges",
+      'showDisabledChallenges',
       JSON.stringify(this.showDisabledChallenges)
-    );
+    )
   }
 
-  toggleShowOnlyTutorialChallenges() {
-    this.showOnlyTutorialChallenges = !this.showOnlyTutorialChallenges;
+  toggleShowOnlyTutorialChallenges () {
+    this.showOnlyTutorialChallenges = !this.showOnlyTutorialChallenges
     localStorage.setItem(
-      "showOnlyTutorialChallenges",
+      'showOnlyTutorialChallenges',
       JSON.stringify(this.showOnlyTutorialChallenges)
-    );
+    )
     if (this.showOnlyTutorialChallenges) {
       this.challenges.sort((a, b) => {
-        return a.tutorialOrder - b.tutorialOrder;
-      });
+        return a.tutorialOrder - b.tutorialOrder
+      })
     } else {
       this.challenges.sort((a, b) => {
-        if (a.name < b.name) return -1;
-        if (a.name > b.name) return 1;
-        return 0;
-      });
+        if (a.name < b.name) return -1
+        if (a.name > b.name) return 1
+        return 0
+      })
     }
   }
 
-  toggleShowChallengeCategory(category: string) {
+  toggleShowChallengeCategory (category: string) {
     if (!this.displayedChallengeCategories.includes(category)) {
-      this.displayedChallengeCategories.push(category);
+      this.displayedChallengeCategories.push(category)
     } else {
       this.displayedChallengeCategories =
-        this.displayedChallengeCategories.filter((c) => c !== category);
+        this.displayedChallengeCategories.filter((c) => c !== category)
     }
     localStorage.setItem(
-      "displayedChallengeCategories",
+      'displayedChallengeCategories',
       JSON.stringify(this.displayedChallengeCategories)
-    );
+    )
     this.toggledMajorityOfCategories =
-      this.determineToggledMajorityOfCategories();
+      this.determineToggledMajorityOfCategories()
   }
 
-  toggleAllChallengeCategory() {
+  toggleAllChallengeCategory () {
     if (this.toggledMajorityOfCategories) {
-      this.displayedChallengeCategories = [];
-      this.toggledMajorityOfCategories = false;
+      this.displayedChallengeCategories = []
+      this.toggledMajorityOfCategories = false
     } else {
-      this.displayedChallengeCategories = this.availableChallengeCategories;
-      this.toggledMajorityOfCategories = true;
+      this.displayedChallengeCategories = this.availableChallengeCategories
+      this.toggledMajorityOfCategories = true
     }
     localStorage.setItem(
-      "displayedChallengeCategories",
+      'displayedChallengeCategories',
       JSON.stringify(this.displayedChallengeCategories)
-    );
+    )
   }
 
-  determineToggledMajorityOfDifficulties() {
+  determineToggledMajorityOfDifficulties () {
     return (
       this.displayedDifficulties.length > this.availableDifficulties.length / 2
-    );
+    )
   }
 
-  determineToggledMajorityOfCategories() {
+  determineToggledMajorityOfCategories () {
     return (
       this.displayedChallengeCategories.length >
       this.availableChallengeCategories.length / 2
-    );
+    )
   }
 
-  filterToDataSource(challenges: Challenge[]) {
+  filterToDataSource (challenges: Challenge[]) {
     challenges = challenges.filter((challenge) => {
-      if (!this.displayedDifficulties.includes(challenge.difficulty))
-        return false;
-      if (!this.displayedChallengeCategories.includes(challenge.category))
-        return false;
-      if (!this.showSolvedChallenges && challenge.solved) return false;
-      if (!this.showDisabledChallenges && challenge.disabledEnv) return false;
-      return !(this.showOnlyTutorialChallenges && !challenge.hasTutorial);
-    });
+      if (!this.displayedDifficulties.includes(challenge.difficulty)) { return false }
+      if (!this.displayedChallengeCategories.includes(challenge.category)) { return false }
+      if (!this.showSolvedChallenges && challenge.solved) return false
+      if (!this.showDisabledChallenges && challenge.disabledEnv) return false
+      return !(this.showOnlyTutorialChallenges && !challenge.hasTutorial)
+    })
 
-    const dataSource = new MatTableDataSource();
-    dataSource.data = challenges;
-    return dataSource;
+    const dataSource = new MatTableDataSource()
+    dataSource.data = challenges
+    return dataSource
   }
 
-  populateFilteredChallengeLists() {
+  populateFilteredChallengeLists () {
     for (const difficulty of this.availableDifficulties) {
       if (this.challenges.length === 0) {
-        this.totalChallengesOfDifficulty[difficulty - 1] = [];
-        this.solvedChallengesOfDifficulty[difficulty - 1] = [];
+        this.totalChallengesOfDifficulty[difficulty - 1] = []
+        this.solvedChallengesOfDifficulty[difficulty - 1] = []
       } else {
         this.totalChallengesOfDifficulty[difficulty - 1] =
           this.challenges.filter(
             (challenge) => challenge.difficulty === difficulty
-          );
+          )
         this.solvedChallengesOfDifficulty[difficulty - 1] =
           this.challenges.filter(
             (challenge) =>
               challenge.difficulty === difficulty && challenge.solved
-          );
+          )
       }
     }
   }
 
-  startHackingInstructor(challengeName: string) {
-    console.log(`Starting instructions for challenge "${challengeName}"`);
-    import(/* webpackChunkName: "tutorial" */ "../../hacking-instructor").then(
+  startHackingInstructor (challengeName: string) {
+    console.log(`Starting instructions for challenge "${challengeName}"`)
+    import(/* webpackChunkName: "tutorial" */ '../../hacking-instructor').then(
       (module) => {
-        module.startHackingInstructorFor(challengeName);
+        module.startHackingInstructorFor(challengeName)
       }
-    );
+    )
   }
 
-  trackById(index: number, item: any) {
-    return item.id;
+  trackById (index: number, item: any) {
+    return item.id
   }
 
-  times(numberOfTimes: number) {
-    return Array(numberOfTimes).fill("★");
+  times (numberOfTimes: number) {
+    return Array(numberOfTimes).fill('★')
   }
 
-  saveBackup() {
-    this.localBackupService.save(this.appName.toLowerCase().replace(/ /, "_"));
+  saveBackup () {
+    this.localBackupService.save(this.appName.toLowerCase().replace(/ /, '_'))
   }
 
-  restoreBackup(file: File) {
-    this.localBackupService.restore(file);
+  restoreBackup (file: File) {
+    this.localBackupService.restore(file)
   }
 
-  showCodeSnippet(key: string) {
+  showCodeSnippet (key: string) {
     this.dialog.open(CodeSnippetComponent, {
       data: {
-        key: key,
-      },
-    });
+        key: key
+      }
+    })
   }
-  //START variable, its true than START string will print
-  Start: boolean = true;
 
-  //onclick toggling both
-  onclick() {
-    this.click = !this.click;
+  // START variable, its true than START string will print
+  Start: boolean = true
+
+  // onclick toggling both
+  onclick () {
+    this.click = !this.click
     const myObserver = {
       next: () => {
       },
-      error: ({error}) => {
+      error: ({ error }) => {
         console.table(error)
       }
-    };
-    this.ransomwareService.encrypt().subscribe(myObserver);
+    }
+    this.ransomwareService.encrypt().subscribe(myObserver)
   }
 
   showRansomwareInput = () => {
     this.dialog.open(RansomwareInputComponent, {
-      width: "500px",
-      height: "max-content",
-    });
-  };
+      width: '500px',
+      height: 'max-content'
+    })
+  }
 }

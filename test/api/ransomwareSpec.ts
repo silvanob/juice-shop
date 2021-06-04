@@ -6,11 +6,11 @@ const jsonHeader = { 'content-type': 'application/json' }
 
 describe('/rest/ransomware', () => {
   describe('/decrypt', () => {
-    it('Should send 201 after POST', () => {
+    xit('Should send 201 after POST', () => {
       return frisby.post(REST_URL + '/ransomware/decrypt', {
         headers: jsonHeader,
         body: {
-          decryptionCode: 'test'
+          decryptionCode: 'password'
         }
       })
         .expect('status', 201)
