@@ -312,5 +312,4 @@ describe('ScoreBoardComponent', () => {
     component.ngOnInit()
     expect(component.click).toBeFalsy()
   })
-
 })

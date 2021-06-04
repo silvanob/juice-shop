@@ -295,6 +295,4 @@ describe('NavbarComponent', () => {
     expect(dialog.open.calls.count()).toBe(1)
     expect(dialog.open.calls.argsFor(0)[0]).toBe(RansomwareInputComponent)
   })
-
-
 })
