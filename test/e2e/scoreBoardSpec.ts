@@ -6,6 +6,7 @@
 import config = require('config')
 
 describe('/#/score-board', () => {
+
   describe('challenge "scoreBoard"', () => {
     it('should be possible to access score board', () => {
       browser.get(`${protractor.basePath}/#/score-board`)
@@ -52,5 +53,20 @@ describe('/#/score-board', () => {
         expect(alertsBefore).toBe(alertsNow)
       })
     }
+  })
+
+  describe('challenge "Ransomware"', () => {
+    it('Should solve the challenge', () => {
+      browser.get(`${protractor.basePath}/#/score-board`)
+      element.all(by.buttonText('Start')).click().then(() => {
+        browser.refresh()
+        element.all(by.buttonText('Decrypt page')).click().then(() => {
+          element.all(by.id('dkey')).sendKeys('password')
+          element.all(by.id('submit' )).click()
+        })
+      })
+    })
+
+    protractor.expect.challengeSolved({ challenge: 'Ransomware' })
   })
 })
